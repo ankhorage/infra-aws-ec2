@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "types": ["bun", "node"],
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@ankhorage/infra-aws-ec2": ["src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "examples/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

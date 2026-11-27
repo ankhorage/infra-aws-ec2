@@ -1,0 +1,32 @@
+graph LR
+  module_examples_basic_usage_index_ts["examples/basic-usage/index.ts"]
+  module_src_constants_infra_ts["src/constants/infra.ts"]
+  module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts["src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"]
+  module_src_features_cloud_compute_application_awsEc2Compute_ts["src/features/cloud-compute/application/awsEc2Compute.ts"]
+  module_src_features_cloud_compute_composition_createInfraAdapter_ts["src/features/cloud-compute/composition/createInfraAdapter.ts"]
+  module_src_index_ts["src/index.ts"]
+  module_src_infraAdapter_test_ts["src/infraAdapter.test.ts"]
+  module_src_types_awsEc2_ts["src/types/awsEc2.ts"]
+  export_AwsEc2AdapterOptions["AwsEc2AdapterOptions"]
+  module_src_types_awsEc2_ts --> export_AwsEc2AdapterOptions
+  export_AwsEc2AdapterOptions -.-> export_AwsEc2Api
+  export_AwsEc2Api["AwsEc2Api"]
+  module_src_types_awsEc2_ts --> export_AwsEc2Api
+  export_AwsEc2Api -.-> export_AwsEc2CreateInput
+  export_AwsEc2Api -.-> export_AwsEc2Identity
+  export_AwsEc2Api -.-> export_AwsEc2Instance
+  export_AwsEc2CreateInput["AwsEc2CreateInput"]
+  module_src_types_awsEc2_ts --> export_AwsEc2CreateInput
+  export_AwsEc2CreateInput -.-> export_AwsEc2Identity
+  export_AwsEc2Identity["AwsEc2Identity"]
+  module_src_types_awsEc2_ts --> export_AwsEc2Identity
+  export_AwsEc2Instance["AwsEc2Instance"]
+  module_src_types_awsEc2_ts --> export_AwsEc2Instance
+  export_createAwsSdkEc2Api["createAwsSdkEc2Api"]
+  module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --> export_createAwsSdkEc2Api
+  export_createAwsSdkEc2Api -.-> export_AwsEc2Api
+  export_createInfraAdapter["createInfraAdapter"]
+  module_src_features_cloud_compute_composition_createInfraAdapter_ts --> export_createInfraAdapter
+  export_createInfraAdapter -.-> export_AwsEc2AdapterOptions
+  export_infraAdapterDescriptor["infraAdapterDescriptor"]
+  module_src_constants_infra_ts --> export_infraAdapterDescriptor

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "adapter",
+  "title": "Ankhorage AWS EC2 Infrastructure",
+  "summary": "Provides a secure, provider-neutral AWS EC2 compute adapter backed by the modular AWS SDK v3 client.",
+  "purpose": "Translate provider-neutral compute lifecycle intent into explicit, ownership-verified AWS EC2 operations without leaking credentials into portable state.",
+  "domain": "AWS EC2 compute infrastructure",
+  "responsibilities": [
+    "Validate, inspect, plan, reconcile and destroy owned EC2 instances.",
+    "Project verified SSH compute targets for runtime adapters.",
+    "Apply secure EC2 defaults including IMDSv2 and encrypted root EBS volumes."
+  ],
+  "boundaries": [
+    "Does not provision VPCs, subnets, security groups, IAM roles, profiles or S3 buckets.",
+    "Does not deploy Kubernetes, Docker workloads, HydraDB or any application.",
+    "Does not persist AWS or SSH credential values."
+  ],
+  "audience": [
+    "Infrastructure hosts selecting AWS EC2 through the canonical Infra compute interface.",
+    "Operators provisioning reusable SSH-capable compute targets on AWS."
+  ],
+  "useCases": [
+    "Provision a securely configured EC2 instance through the common compute adapter.",
+    "Inspect or reconcile owned EC2 instance state without a local ledger.",
+    "Expose a host-key-verified SSH target to a runtime adapter."
+  ],
+  "architecture": {
+    "role": "A cloud compute adapter translating Infra lifecycle operations into isolated AWS SDK and SSH boundaries.",
+    "invariants": [
+      "AWS and SSH credentials remain transient execution inputs.",
+      "Mutations require project/environment ownership verification.",
+      "Public results conform to the provider-neutral Infra compute contract."
+    ]
+  },
+  "implements": [
+    {
+      "packageName": "@ankhorage/contracts",
+      "subpath": "./infra",
+      "interfaceId": "InfraComputeAdapter"
+    }
+  ],
+  "constraints": {
+    "platforms": ["AWS EC2"],
+    "configuration": [
+      "Existing network, security groups, SSH key pair and optional IAM profile must be explicitly selected."
+    ],
+    "security": [
+      "The adapter requires encrypted root EBS storage, IMDSv2 and explicit SSH source restrictions."
+    ],
+    "limitations": [
+      "Live AWS acceptance requires separately authorized non-production credentials."
+    ]
+  }
+}
