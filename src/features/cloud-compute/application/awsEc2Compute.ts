@@ -12,6 +12,7 @@ import type {
 } from '@ankhorage/contracts/infra';
 
 import type { AwsEc2Api, AwsEc2Identity, AwsEc2Instance } from '../../../types/awsEc2.js';
+import { resolveAwsEc2ExecutionContextAsync } from './resolveAwsEc2ExecutionContextAsync.js';
 
 /*** Validate AWS EC2 config and control-plane access without any mutation. */
 export async function validateAwsEc2ComputeAsync(
@@ -20,7 +21,10 @@ export async function validateAwsEc2ComputeAsync(
 ): Promise<InfraResult<null>> {
   const selection = getSelection(context);
   if (!selection.ok) return selection;
-  return api.validateAsync(selection.value, context.signal);
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  return execution.ok
+    ? api.validateAsync(execution.value, selection.value, context.signal)
+    : execution;
 }
 
 /*** Discover only exact project/environment-owned instances without a local ledger. */
@@ -28,7 +32,11 @@ export async function inspectAwsEc2ComputeAsync(
   api: AwsEc2Api,
   context: InfraExecutionContext,
 ): Promise<InfraResult<InfraComputeSnapshot>> {
-  const instances = await api.inspectAsync(identity(context), context.signal);
+  const selection = getSelection(context);
+  if (!selection.ok) return selection;
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  if (!execution.ok) return execution;
+  const instances = await api.inspectAsync(execution.value, identity(context), context.signal);
   return instances.ok ? snapshot(context, instances.value) : instances;
 }
 
@@ -39,7 +47,11 @@ export async function planAwsEc2ComputeAsync(
 ): Promise<InfraResult<readonly InfraPlanAction[]>> {
   const selection = getSelection(context);
   if (!selection.ok) return selection;
-  const inspected = await api.inspectAsync(identity(context), context.signal);
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  if (!execution.ok) return execution;
+  const tagsValid = validateTags(selection.value);
+  if (!tagsValid.ok) return tagsValid;
+  const inspected = await api.inspectAsync(execution.value, identity(context), context.signal);
   if (!inspected.ok) return inspected;
   const owner = resource(context).identity;
   const [instance] = inspected.value;
@@ -71,7 +83,11 @@ export async function ensureAwsEc2ComputeAsync(
 ): Promise<InfraResult<InfraComputeSnapshot>> {
   const selection = getSelection(context);
   if (!selection.ok) return selection;
-  const inspected = await api.inspectAsync(identity(context), context.signal);
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  if (!execution.ok) return execution;
+  const tagsValid = validateTags(selection.value);
+  if (!tagsValid.ok) return tagsValid;
+  const inspected = await api.inspectAsync(execution.value, identity(context), context.signal);
   if (!inspected.ok) return inspected;
   const [current] = inspected.value;
   const hash = configurationHash(selection.value);
@@ -82,14 +98,27 @@ export async function ensureAwsEc2ComputeAsync(
     );
   if (current === undefined) {
     const created = await api.createAsync(
-      { identity: identity(context), selection: selection.value, configurationHash: hash },
+      {
+        execution: execution.value,
+        identity: identity(context),
+        selection: selection.value,
+        configurationHash: hash,
+      },
       context.signal,
     );
-    return created.ok ? snapshot(context, [created.value]) : created;
+    if (!created.ok) return created;
+    const ready = await api.waitUntilReadyAsync(execution.value, created.value.id, context.signal);
+    return ready.ok ? snapshot(context, [ready.value]) : ready;
   }
   if (current.state === 'stopped') {
-    const started = await api.startAsync(current.id, context.signal);
+    const started = await api.startAsync(execution.value, current.id, context.signal);
     if (!started.ok) return started;
+    const ready = await api.waitUntilReadyAsync(execution.value, current.id, context.signal);
+    return ready.ok ? snapshot(context, [ready.value]) : ready;
+  }
+  if (current.state === 'running') {
+    const ready = await api.waitUntilReadyAsync(execution.value, current.id, context.signal);
+    return ready.ok ? snapshot(context, [ready.value]) : ready;
   }
   return snapshot(context, [current]);
 }
@@ -99,7 +128,11 @@ export async function statusAwsEc2ComputeAsync(
   api: AwsEc2Api,
   context: InfraExecutionContext,
 ): Promise<InfraResult<readonly InfraResourceStatus[]>> {
-  const inspected = await api.inspectAsync(identity(context), context.signal);
+  const selection = getSelection(context);
+  if (!selection.ok) return selection;
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  if (!execution.ok) return execution;
+  const inspected = await api.inspectAsync(execution.value, identity(context), context.signal);
   if (!inspected.ok) return inspected;
   return {
     ok: true,
@@ -139,10 +172,14 @@ export async function destroyAwsEc2ComputeAsync(
       'aws-ec2-destroy-unconfirmed',
       'AWS EC2 destroy requires exact project and environment confirmation.',
     );
-  const inspected = await api.inspectAsync(identity(context), context.signal);
+  const selection = getSelection(context);
+  if (!selection.ok) return selection;
+  const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
+  if (!execution.ok) return execution;
+  const inspected = await api.inspectAsync(execution.value, identity(context), context.signal);
   if (!inspected.ok) return inspected;
   for (const instance of inspected.value) {
-    const removed = await api.terminateAsync(instance.id, context.signal);
+    const removed = await api.terminateAsync(execution.value, instance.id, context.signal);
     if (!removed.ok) return removed;
   }
   return {
@@ -162,16 +199,17 @@ function getSelection(
   context: InfraExecutionContext,
 ): InfraResult<InfraComputeSelection<'aws-ec2'>> {
   const selection = context.desired.deployment.compute;
-  return selection.provider === 'aws-ec2'
-    ? { ok: true, value: selection, diagnostics: [] }
-    : failure(
-        'aws-ec2-selection-invalid',
-        'AWS EC2 adapter requires the canonical aws-ec2 compute selection.',
-      );
+  if (selection.provider !== 'aws-ec2')
+    return failure(
+      'aws-ec2-selection-invalid',
+      'AWS EC2 adapter requires the canonical aws-ec2 compute selection.',
+    );
+  return { ok: true, value: selection, diagnostics: [] };
 }
-function identity(context: InfraExecutionContext): AwsEc2Identity {
-  return { projectId: context.projectId, environment: context.environment };
-}
+const identity = (context: InfraExecutionContext): AwsEc2Identity => ({
+  projectId: context.projectId,
+  environment: context.environment,
+});
 function resource(context: InfraExecutionContext) {
   return {
     identity: { ...identity(context), adapter: 'aws-ec2' as const, resourceId: 'instance' },
@@ -180,8 +218,17 @@ function resource(context: InfraExecutionContext) {
     dependsOn: [],
   };
 }
-function configurationHash(selection: InfraComputeSelection<'aws-ec2'>): string {
-  return createHash('sha256').update(JSON.stringify(selection)).digest('hex').slice(0, 32);
+const configurationHash = (selection: InfraComputeSelection<'aws-ec2'>): string =>
+  createHash('sha256').update(JSON.stringify(selection)).digest('hex').slice(0, 32);
+function validateTags(selection: InfraComputeSelection<'aws-ec2'>): InfraResult<null> {
+  const reserved = new Set(
+    'ankhorage:project-id,ankhorage:environment,ankhorage:account-id,ankhorage:region,ankhorage:adapter,ankhorage:configuration-hash'.split(
+      ',',
+    ),
+  );
+  return Object.keys(selection.tags ?? {}).some((key) => reserved.has(key))
+    ? failure('aws-ec2-reserved-tag', 'AWS EC2 ownership tags are reserved.')
+    : { ok: true, value: null, diagnostics: [] };
 }
 function snapshot(
   context: InfraExecutionContext,
@@ -230,6 +277,7 @@ function snapshot(
     diagnostics: [],
   };
 }
-function failure(code: string, message: string): InfraResult<never> {
-  return { ok: false, diagnostics: [{ severity: 'error', code, message }] };
-}
+const failure = (code: string, message: string): InfraResult<never> => ({
+  ok: false,
+  diagnostics: [{ severity: 'error', code, message }],
+});

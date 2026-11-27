@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "@ankhorage/contracts": "^26.19.0",
-    "@aws-sdk/client-ec2": "^3.1178.0"
+    "@aws-sdk/client-ec2": "^3.1178.0",
+    "@aws-sdk/client-sts": "^3.1178.0"
   },
   "devDependencies": {
     "@ankhorage/devtools": "^2.12.2",

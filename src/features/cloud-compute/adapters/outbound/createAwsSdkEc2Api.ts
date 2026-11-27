@@ -3,6 +3,7 @@ import {
   type _InstanceType,
   DescribeImagesCommand,
   DescribeInstancesCommand,
+  DescribeInstanceStatusCommand,
   DescribeInstanceTypesCommand,
   DescribeSecurityGroupsCommand,
   DescribeSubnetsCommand,
@@ -12,26 +13,33 @@ import {
   StartInstancesCommand,
   TerminateInstancesCommand,
 } from '@aws-sdk/client-ec2';
+import { GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts';
 
 import type {
   AwsEc2Api,
   AwsEc2CreateInput,
+  AwsEc2ExecutionContext,
   AwsEc2Identity,
   AwsEc2Instance,
 } from '../../../../types/awsEc2.js';
 
-/*** Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain. */
+/*** Create an AWS boundary which accepts only explicit, port-resolved credentials. */
 export function createAwsSdkEc2Api(): AwsEc2Api {
   return new AwsSdkEc2Api();
 }
 
 class AwsSdkEc2Api implements AwsEc2Api {
   async validateAsync(
+    execution: AwsEc2ExecutionContext,
     selection: InfraComputeSelection<'aws-ec2'>,
     signal?: AbortSignal,
   ): Promise<InfraResult<null>> {
     try {
-      const client = new EC2Client({ region: selection.region });
+      const caller = await sts(execution).send(new GetCallerIdentityCommand({}), {
+        abortSignal: signal,
+      });
+      if (caller.Account !== execution.accountId) return fail('aws-ec2-account-mismatch');
+      const client = ec2(execution);
       await Promise.all([
         client.send(new DescribeImagesCommand({ ImageIds: [selection.ami] }), {
           abortSignal: signal,
@@ -56,33 +64,25 @@ class AwsSdkEc2Api implements AwsEc2Api {
     }
   }
   async inspectAsync(
+    execution: AwsEc2ExecutionContext,
     identity: AwsEc2Identity,
     signal?: AbortSignal,
   ): Promise<InfraResult<readonly AwsEc2Instance[]>> {
     try {
-      const client = new EC2Client({});
-      const result = await client.send(
+      const result = await ec2(execution).send(
         new DescribeInstancesCommand({
-          Filters: Object.entries(tags(identity)).map(([Name, Values]) => ({
-            Name,
-            Values: [Values],
+          Filters: Object.entries(tags(identity, execution)).map(([key, value]) => ({
+            Name: `tag:${key}`,
+            Values: [value],
           })),
         }),
         { abortSignal: signal },
       );
-      const instances = (result.Reservations ?? [])
+      const values = (result.Reservations ?? [])
         .flatMap((reservation) => reservation.Instances ?? [])
-        .map((instance) => ({
-          id: instance.InstanceId ?? '',
-          state: mapState(instance.State?.Name),
-          publicIp: instance.PublicIpAddress,
-          privateIp: instance.PrivateIpAddress,
-          configurationHash: instance.Tags?.find(
-            (tag) => tag.Key === 'ankhorage:configuration-hash',
-          )?.Value,
-        }))
-        .filter((instance) => instance.id.length > 0);
-      return instances.length > 1 ? fail('aws-ec2-ownership-collision') : ok(instances);
+        .map(toInstance)
+        .filter((value) => value.id.length > 0);
+      return values.length > 1 ? fail('aws-ec2-ownership-collision') : ok(values);
     } catch {
       return fail('aws-ec2-inspection-failed');
     }
@@ -92,21 +92,24 @@ class AwsSdkEc2Api implements AwsEc2Api {
     signal?: AbortSignal,
   ): Promise<InfraResult<AwsEc2Instance>> {
     try {
-      const client = new EC2Client({ region: input.selection.region });
-      const result = await client.send(new RunInstancesCommand(createRequest(input)), {
+      const result = await ec2(input.execution).send(new RunInstancesCommand(request(input)), {
         abortSignal: signal,
       });
-      const instance = result.Instances?.[0];
-      return instance?.InstanceId === undefined
+      const created = result.Instances?.[0];
+      return created?.InstanceId === undefined
         ? fail('aws-ec2-create-failed')
-        : ok({ id: instance.InstanceId, state: 'pending' });
+        : ok({ id: created.InstanceId, state: 'pending' });
     } catch {
       return fail('aws-ec2-create-failed');
     }
   }
-  async startAsync(instanceId: string, signal?: AbortSignal): Promise<InfraResult<null>> {
+  async startAsync(
+    execution: AwsEc2ExecutionContext,
+    instanceId: string,
+    signal?: AbortSignal,
+  ): Promise<InfraResult<null>> {
     try {
-      await new EC2Client({}).send(new StartInstancesCommand({ InstanceIds: [instanceId] }), {
+      await ec2(execution).send(new StartInstancesCommand({ InstanceIds: [instanceId] }), {
         abortSignal: signal,
       });
       return ok(null);
@@ -114,9 +117,13 @@ class AwsSdkEc2Api implements AwsEc2Api {
       return fail('aws-ec2-start-failed');
     }
   }
-  async terminateAsync(instanceId: string, signal?: AbortSignal): Promise<InfraResult<null>> {
+  async terminateAsync(
+    execution: AwsEc2ExecutionContext,
+    instanceId: string,
+    signal?: AbortSignal,
+  ): Promise<InfraResult<null>> {
     try {
-      await new EC2Client({}).send(new TerminateInstancesCommand({ InstanceIds: [instanceId] }), {
+      await ec2(execution).send(new TerminateInstancesCommand({ InstanceIds: [instanceId] }), {
         abortSignal: signal,
       });
       return ok(null);
@@ -124,17 +131,51 @@ class AwsSdkEc2Api implements AwsEc2Api {
       return fail('aws-ec2-destroy-failed');
     }
   }
+  async waitUntilReadyAsync(
+    execution: AwsEc2ExecutionContext,
+    instanceId: string,
+    signal?: AbortSignal,
+  ): Promise<InfraResult<AwsEc2Instance>> {
+    const deadline = Date.now() + 120_000;
+    try {
+      while (Date.now() < deadline) {
+        if (signal?.aborted) return fail('aws-ec2-readiness-cancelled');
+        const [status, details] = await Promise.all([
+          ec2(execution).send(
+            new DescribeInstanceStatusCommand({
+              InstanceIds: [instanceId],
+              IncludeAllInstances: true,
+            }),
+            { abortSignal: signal },
+          ),
+          ec2(execution).send(new DescribeInstancesCommand({ InstanceIds: [instanceId] }), {
+            abortSignal: signal,
+          }),
+        ]);
+        const raw = details.Reservations?.flatMap((reservation) => reservation.Instances ?? [])[0];
+        const value = raw === undefined ? undefined : toInstance(raw);
+        const checks = status.InstanceStatuses?.[0];
+        if (isReady(value, checks?.InstanceStatus?.Status, checks?.SystemStatus?.Status))
+          return ok(value);
+        await waitAsync(2_000, signal);
+      }
+      return fail('aws-ec2-readiness-timeout');
+    } catch {
+      return fail(signal?.aborted ? 'aws-ec2-readiness-cancelled' : 'aws-ec2-readiness-failed');
+    }
+  }
 }
 
-/*** Map secure portable EC2 intent into a single SDK create request. */
-function createRequest(input: AwsEc2CreateInput): RunInstancesCommandInput {
+/*** Produce a secure idempotent EC2 creation request. */
+function request(input: AwsEc2CreateInput): RunInstancesCommandInput {
+  const ownership = tags(input.identity, input.execution);
   return {
     ImageId: input.selection.ami,
     InstanceType: input.selection.instanceType as _InstanceType,
     MinCount: 1,
     MaxCount: 1,
     ClientToken:
-      `${input.identity.projectId}-${input.identity.environment}-${input.configurationHash}`.slice(
+      `${input.identity.projectId}-${input.identity.environment}-${input.execution.accountId}-${input.execution.region}-${input.configurationHash}`.slice(
         0,
         64,
       ),
@@ -161,32 +202,85 @@ function createRequest(input: AwsEc2CreateInput): RunInstancesCommandInput {
       {
         ResourceType: 'instance',
         Tags: Object.entries({
-          ...tags(input.identity),
-          'ankhorage:configuration-hash': input.configurationHash,
           ...input.selection.tags,
+          ...ownership,
+          'ankhorage:configuration-hash': input.configurationHash,
         }).map(([Key, Value]) => ({ Key, Value })),
       },
     ],
   };
 }
-function tags(identity: AwsEc2Identity): Record<string, string> {
+function ec2(execution: AwsEc2ExecutionContext): EC2Client {
+  return new EC2Client({ region: execution.region, credentials: credentials(execution) });
+}
+function sts(execution: AwsEc2ExecutionContext): STSClient {
+  return new STSClient({ region: execution.region, credentials: credentials(execution) });
+}
+function credentials(execution: AwsEc2ExecutionContext) {
+  return {
+    accessKeyId: execution.accessKeyId,
+    secretAccessKey: execution.secretAccessKey,
+    sessionToken: execution.sessionToken,
+  };
+}
+function tags(identity: AwsEc2Identity, execution: AwsEc2ExecutionContext): Record<string, string> {
   return {
     'ankhorage:project-id': identity.projectId,
     'ankhorage:environment': identity.environment,
+    'ankhorage:account-id': execution.accountId,
+    'ankhorage:region': execution.region,
     'ankhorage:adapter': 'aws-ec2',
   };
 }
-function mapState(state: string | undefined): AwsEc2Instance['state'] {
-  if (
-    state === 'running' ||
-    state === 'stopped' ||
-    state === 'stopping' ||
-    state === 'shutting-down' ||
-    state === 'terminated' ||
-    state === 'pending'
-  )
-    return state;
-  return 'failed';
+function toInstance(value: {
+  InstanceId?: string;
+  State?: { Name?: string };
+  PublicIpAddress?: string;
+  PrivateIpAddress?: string;
+  Tags?: readonly { Key?: string; Value?: string }[];
+}): AwsEc2Instance {
+  return {
+    id: value.InstanceId ?? '',
+    state: state(value.State?.Name),
+    publicIp: value.PublicIpAddress,
+    privateIp: value.PrivateIpAddress,
+    configurationHash: value.Tags?.find((tag) => tag.Key === 'ankhorage:configuration-hash')?.Value,
+  };
+}
+function state(value: string | undefined): AwsEc2Instance['state'] {
+  return value === 'running' ||
+    value === 'stopped' ||
+    value === 'stopping' ||
+    value === 'shutting-down' ||
+    value === 'terminated' ||
+    value === 'pending'
+    ? value
+    : 'failed';
+}
+function isReady(
+  value: AwsEc2Instance | undefined,
+  instanceStatus: string | undefined,
+  systemStatus: string | undefined,
+): value is AwsEc2Instance & { publicIp: string } {
+  return (
+    value?.state === 'running' &&
+    value.publicIp !== undefined &&
+    instanceStatus === 'ok' &&
+    systemStatus === 'ok'
+  );
+}
+function waitAsync(milliseconds: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(resolve, milliseconds);
+    signal?.addEventListener(
+      'abort',
+      () => {
+        clearTimeout(timeout);
+        reject(new Error('aborted'));
+      },
+      { once: true },
+    );
+  });
 }
 function ok<T>(value: T): InfraResult<T> {
   return { ok: true, value, diagnostics: [] };

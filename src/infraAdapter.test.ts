@@ -11,6 +11,7 @@ const context = {
       compute: {
         provider: 'aws-ec2',
         region: 'eu-central-1',
+        credentials: { source: 'control-plane', name: 'AWS_EC2' },
         instanceType: 't3.large',
         ami: 'ami-0123456789abcdef0',
         architecture: 'x86_64',
@@ -29,7 +30,16 @@ const context = {
   },
   credentials: {
     findAsync: () => Promise.resolve({ ok: true as const, value: null, diagnostics: [] }),
-    resolveAsync: () => Promise.resolve({ ok: true as const, value: {}, diagnostics: [] }),
+    resolveAsync: () =>
+      Promise.resolve({
+        ok: true as const,
+        value: {
+          AWS_ACCESS_KEY_ID: 'key',
+          AWS_SECRET_ACCESS_KEY: 'secret',
+          AWS_ACCOUNT_ID: '123456789012',
+        },
+        diagnostics: [],
+      }),
     persistAsync: () => Promise.resolve({ ok: true as const, value: null, diagnostics: [] }),
   },
   secrets: {
@@ -43,6 +53,12 @@ const api: AwsEc2Api = {
     Promise.resolve({ ok: true, value: { id: 'i-1', state: 'pending' }, diagnostics: [] }),
   startAsync: () => Promise.resolve({ ok: true, value: null, diagnostics: [] }),
   terminateAsync: () => Promise.resolve({ ok: true, value: null, diagnostics: [] }),
+  waitUntilReadyAsync: () =>
+    Promise.resolve({
+      ok: true,
+      value: { id: 'i-1', state: 'running', publicIp: '203.0.113.1' },
+      diagnostics: [],
+    }),
 };
 
 test('projects the canonical descriptor and creates an owned instance plan', async () => {
