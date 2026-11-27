@@ -130,12 +130,17 @@
             <li>
     <button class="nav-button" type="button" data-target="src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts">
       src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts
-      <small>6 functions</small>
+      <small>12 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/cloud-compute/application/awsEc2Compute.ts">
       src/features/cloud-compute/application/awsEc2Compute.ts
-      <small>12 functions</small>
+      <small>14 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts">
+      src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts
+      <small>2 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/cloud-compute/composition/createInfraAdapter.ts">
@@ -154,7 +159,7 @@
       <div class="summary">
         <div><strong>8</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>8</strong><span class="muted">modules</span></div>
+        <div><strong>9</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -167,10 +172,10 @@
     <section class="panel"><h2>Policy</h2><p>No documentation findings.</p></section>
     <section class="panel">
       <h2>Modules</h2>
-      <article class="item" data-search="examples/basic-usage/index.ts dist/index.d.ts">
+      <article class="item" data-search="examples/basic-usage/index.ts src/index.ts">
     <h3>examples/basic-usage/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>dist/index.d.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/constants/infra.ts infraAdapterDescriptor">
     <h3>src/constants/infra.ts</h3>
@@ -182,11 +187,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/types/awsEc2.ts</code></p>
     <p><strong>Exports:</strong> <code>createAwsSdkEc2Api</code></p>
-  </article><article class="item" data-search="src/features/cloud-compute/application/awsEc2Compute.ts src/types/awsEc2.ts destroyAwsEc2ComputeAsync ensureAwsEc2ComputeAsync inspectAwsEc2ComputeAsync planAwsEc2ComputeAsync statusAwsEc2ComputeAsync validateAwsEc2ComputeAsync">
+  </article><article class="item" data-search="src/features/cloud-compute/application/awsEc2Compute.ts src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts src/types/awsEc2.ts destroyAwsEc2ComputeAsync ensureAwsEc2ComputeAsync inspectAwsEc2ComputeAsync planAwsEc2ComputeAsync statusAwsEc2ComputeAsync validateAwsEc2ComputeAsync">
     <h3>src/features/cloud-compute/application/awsEc2Compute.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/types/awsEc2.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts</code>, <code>src/types/awsEc2.ts</code></p>
     <p><strong>Exports:</strong> <code>destroyAwsEc2ComputeAsync</code>, <code>ensureAwsEc2ComputeAsync</code>, <code>inspectAwsEc2ComputeAsync</code>, <code>planAwsEc2ComputeAsync</code>, <code>statusAwsEc2ComputeAsync</code>, <code>validateAwsEc2ComputeAsync</code></p>
+  </article><article class="item" data-search="src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts src/types/awsEc2.ts resolveAwsEc2ExecutionContextAsync">
+    <h3>src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/awsEc2.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveAwsEc2ExecutionContextAsync</code></p>
   </article><article class="item" data-search="src/features/cloud-compute/composition/createInfraAdapter.ts src/constants/infra.ts src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts src/features/cloud-compute/application/awsEc2Compute.ts src/types/awsEc2.ts createInfraAdapter">
     <h3>src/features/cloud-compute/composition/createInfraAdapter.ts</h3>
     <p class="muted">Referenced module</p>
@@ -202,11 +212,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/types/awsEc2.ts AwsEc2AdapterOptions AwsEc2Api AwsEc2CreateInput AwsEc2Identity AwsEc2Instance">
+  </article><article class="item" data-search="src/types/awsEc2.ts AwsEc2AdapterOptions AwsEc2Api AwsEc2CreateInput AwsEc2ExecutionContext AwsEc2Identity AwsEc2Instance">
     <h3>src/types/awsEc2.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>AwsEc2AdapterOptions</code>, <code>AwsEc2Api</code>, <code>AwsEc2CreateInput</code>, <code>AwsEc2Identity</code>, <code>AwsEc2Instance</code></p>
+    <p><strong>Exports:</strong> <code>AwsEc2AdapterOptions</code>, <code>AwsEc2Api</code>, <code>AwsEc2CreateInput</code>, <code>AwsEc2ExecutionContext</code>, <code>AwsEc2Identity</code>, <code>AwsEc2Instance</code></p>
   </article>
     </section>
     <section class="panel">
@@ -228,11 +238,11 @@
             </section>
             <section>
               <h3>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts</h3>
-              <article class="item" id="symbol-createawssdkec2api" data-search="createAwsSdkEc2Api  function src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain. AwsEc2Api () =&gt; AwsEc2Api">
+              <article class="item" id="symbol-createawssdkec2api" data-search="createAwsSdkEc2Api  function src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Create an AWS boundary which accepts only explicit, port-resolved credentials. AwsEc2Api () =&gt; AwsEc2Api">
     <h4>createAwsSdkEc2Api</h4>
     
-    <p class="muted">function • <code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:24:1</code></p>
-    <p>Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.</p>
+    <p class="muted">function • <code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:27:1</code></p>
+    <p>Create an AWS boundary which accepts only explicit, port-resolved credentials.</p>
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
     <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">AwsEc2Api</li></ul></div>
@@ -279,7 +289,7 @@
               <article class="item" id="symbol-awsec2adapteroptions" data-search="AwsEc2AdapterOptions  type src/types/awsEc2.ts  AwsEc2Api">
     <h4>AwsEc2AdapterOptions</h4>
     
-    <p class="muted">type • <code>src/types/awsEc2.ts:39:1</code></p>
+    <p class="muted">type • <code>src/types/awsEc2.ts:64:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -300,7 +310,7 @@
   </article><article class="item" id="symbol-awsec2api" data-search="AwsEc2Api  type src/types/awsEc2.ts  AwsEc2CreateInput AwsEc2Identity AwsEc2Instance">
     <h4>AwsEc2Api</h4>
     
-    <p class="muted">type • <code>src/types/awsEc2.ts:16:1</code></p>
+    <p class="muted">type • <code>src/types/awsEc2.ts:25:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -318,25 +328,31 @@
           </tr><tr>
             <td><code>inspectAsync</code></td>
             <td>method</td>
-            <td><code>(identity: AwsEc2Identity, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;readonly AwsEc2Instance[]&gt;&gt;</code></td>
+            <td><code>(execution: AwsEc2ExecutionContext, identity: AwsEc2Identity, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;readonly AwsEc2Instance[]&gt;&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
             <td><code>startAsync</code></td>
             <td>method</td>
-            <td><code>(instanceId: string, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
+            <td><code>(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
             <td><code>terminateAsync</code></td>
             <td>method</td>
-            <td><code>(instanceId: string, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
+            <td><code>(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
             <td><code>validateAsync</code></td>
             <td>method</td>
-            <td><code>(selection: InfraComputeSelection&lt;&quot;aws-ec2&quot;&gt;, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
+            <td><code>(execution: AwsEc2ExecutionContext, selection: InfraComputeSelection&lt;&quot;aws-ec2&quot;&gt;, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;null&gt;&gt;</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
+            <td><code>waitUntilReadyAsync</code></td>
+            <td>method</td>
+            <td><code>(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) =&gt; Promise&lt;InfraResult&lt;AwsEc2Instance&gt;&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr>
@@ -345,7 +361,7 @@
   </article><article class="item" id="symbol-awsec2createinput" data-search="AwsEc2CreateInput  type src/types/awsEc2.ts  AwsEc2Identity">
     <h4>AwsEc2CreateInput</h4>
     
-    <p class="muted">type • <code>src/types/awsEc2.ts:34:1</code></p>
+    <p class="muted">type • <code>src/types/awsEc2.ts:58:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -358,6 +374,12 @@
             <td><code>configurationHash</code></td>
             <td>property</td>
             <td><code>string</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
+            <td><code>execution</code></td>
+            <td>property</td>
+            <td><code>AwsEc2ExecutionContext</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
@@ -378,7 +400,7 @@
   </article><article class="item" id="symbol-awsec2identity" data-search="AwsEc2Identity  type src/types/awsEc2.ts ">
     <h4>AwsEc2Identity</h4>
     
-    <p class="muted">type • <code>src/types/awsEc2.ts:30:1</code></p>
+    <p class="muted">type • <code>src/types/awsEc2.ts:54:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -465,7 +487,7 @@
   package__ankhorage_infra_aws_ec2 --&gt; entrypoint_src_index_ts
   module_examples_basic_usage_index_ts[&quot;examples/basic-usage/index.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_examples_basic_usage_index_ts
-  module_examples_basic_usage_index_ts --&gt; module_dist_index_d_ts
+  module_examples_basic_usage_index_ts --&gt; module_src_index_ts
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_constants_infra_ts
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
@@ -473,7 +495,11 @@
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_application_awsEc2Compute_ts
+  module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
+  package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_composition_createInfraAdapter_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_constants_infra_ts
@@ -495,7 +521,7 @@
   package__ankhorage_infra_aws_ec2 --&gt; entrypoint_src_index_ts
   module_examples_basic_usage_index_ts[&quot;examples/basic-usage/index.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_examples_basic_usage_index_ts
-  module_examples_basic_usage_index_ts --&gt; module_dist_index_d_ts
+  module_examples_basic_usage_index_ts --&gt; module_src_index_ts
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_constants_infra_ts
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
@@ -503,7 +529,11 @@
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_application_awsEc2Compute_ts
+  module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
+  package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   package__ankhorage_infra_aws_ec2 -.-&gt; module_src_features_cloud_compute_composition_createInfraAdapter_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_constants_infra_ts
@@ -526,13 +556,16 @@
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_infraAdapter_test_ts[&quot;src/infraAdapter.test.ts&quot;]
   module_src_types_awsEc2_ts[&quot;src/types/awsEc2.ts&quot;]
-  module_examples_basic_usage_index_ts --&gt; module_dist_index_d_ts
+  module_examples_basic_usage_index_ts --&gt; module_src_index_ts
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_constants_infra_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_features_cloud_compute_application_awsEc2Compute_ts
@@ -546,13 +579,16 @@
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_infraAdapter_test_ts[&quot;src/infraAdapter.test.ts&quot;]
   module_src_types_awsEc2_ts[&quot;src/types/awsEc2.ts&quot;]
-  module_examples_basic_usage_index_ts --&gt; module_dist_index_d_ts
+  module_examples_basic_usage_index_ts --&gt; module_src_index_ts
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts --&gt; module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts --&gt; module_src_types_awsEc2_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_constants_infra_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --&gt; module_src_features_cloud_compute_application_awsEc2Compute_ts
@@ -568,6 +604,7 @@
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_infraAdapter_test_ts[&quot;src/infraAdapter.test.ts&quot;]
@@ -603,6 +640,7 @@
   module_src_constants_infra_ts[&quot;src/constants/infra.ts&quot;]
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts[&quot;src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts&quot;]
   module_src_features_cloud_compute_application_awsEc2Compute_ts[&quot;src/features/cloud-compute/application/awsEc2Compute.ts&quot;]
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts[&quot;src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts&quot;]
   module_src_features_cloud_compute_composition_createInfraAdapter_ts[&quot;src/features/cloud-compute/composition/createInfraAdapter.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_infraAdapter_test_ts[&quot;src/infraAdapter.test.ts&quot;]
@@ -661,29 +699,53 @@
         <section id="view-src-features-cloud-compute-adapters-outbound-createawssdkec2api-ts" class="view" data-view="src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts" hidden>
     <section class="panel">
       <h2>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts</h2>
-      <article class="item" data-search="createAwsSdkEc2Api src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.">
+      <article class="item" data-search="createAwsSdkEc2Api src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Create an AWS boundary which accepts only explicit, port-resolved credentials.">
     <h3>createAwsSdkEc2Api</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:24:1</code></p>
-    <p>Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.</p>
-</article><article class="item" data-search="createRequest src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Map secure portable EC2 intent into a single SDK create request.">
-    <h3>createRequest</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:130:1</code></p>
-    <p>Map secure portable EC2 intent into a single SDK create request.</p>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:27:1</code></p>
+    <p>Create an AWS boundary which accepts only explicit, port-resolved credentials.</p>
+</article><article class="item" data-search="request src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts Produce a secure idempotent EC2 creation request.">
+    <h3>request</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:170:1</code></p>
+    <p>Produce a secure idempotent EC2 creation request.</p>
+</article><article class="item" data-search="ec2 src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>ec2</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:213:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="sts src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>sts</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:216:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="credentials src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>credentials</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:219:1</code></p>
+    <p class="empty">No description available.</p>
 </article><article class="item" data-search="tags src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
     <h3>tags</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:172:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:226:1</code></p>
     <p class="empty">No description available.</p>
-</article><article class="item" data-search="mapState src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
-    <h3>mapState</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:179:1</code></p>
+</article><article class="item" data-search="toInstance src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>toInstance</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:235:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="state src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>state</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:250:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="isReady src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>isReady</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:260:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="waitAsync src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
+    <h3>waitAsync</h3>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:272:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="ok src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
     <h3>ok</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:191:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:285:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="fail src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts ">
     <h3>fail</h3>
-    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:194:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts:288:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>
@@ -692,51 +754,72 @@
       <h2>src/features/cloud-compute/application/awsEc2Compute.ts</h2>
       <article class="item" data-search="validateAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Validate AWS EC2 config and control-plane access without any mutation.">
     <h3>validateAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:17:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:18:1</code></p>
     <p>Validate AWS EC2 config and control-plane access without any mutation.</p>
 </article><article class="item" data-search="inspectAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Discover only exact project/environment-owned instances without a local ledger.">
     <h3>inspectAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:27:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:33:1</code></p>
     <p>Discover only exact project/environment-owned instances without a local ledger.</p>
 </article><article class="item" data-search="planAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Produce a deterministic no-mutation EC2 plan, requiring explicit replacement for drift.">
     <h3>planAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:36:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:50:1</code></p>
     <p>Produce a deterministic no-mutation EC2 plan, requiring explicit replacement for drift.</p>
 </article><article class="item" data-search="ensureAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Reconcile a single owned EC2 instance without silently replacing configuration drift.">
     <h3>ensureAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:68:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:86:1</code></p>
     <p>Reconcile a single owned EC2 instance without silently replacing configuration drift.</p>
 </article><article class="item" data-search="statusAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Report fresh provider state for the exact owned instance.">
     <h3>statusAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:98:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:133:1</code></p>
     <p>Report fresh provider state for the exact owned instance.</p>
 </article><article class="item" data-search="destroyAwsEc2ComputeAsync src/features/cloud-compute/application/awsEc2Compute.ts Terminate only a confirmed instance carrying the exact project/environment ownership tags.">
     <h3>destroyAwsEc2ComputeAsync</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:127:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:166:1</code></p>
     <p>Terminate only a confirmed instance carrying the exact project/environment ownership tags.</p>
 </article><article class="item" data-search="getSelection src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>getSelection</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:161:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:204:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="identity src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>identity</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:172:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:215:7</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="resource src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>resource</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:175:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:219:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="configurationHash src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>configurationHash</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:183:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:227:7</code></p>
     <p class="empty">No description available.</p>
+</article><article class="item" data-search="validateTags src/features/cloud-compute/application/awsEc2Compute.ts ">
+    <h3>validateTags</h3>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:229:1</code></p>
+    <p class="empty">No description available.</p>
+</article><article class="item" data-search="validateSshIdentity src/features/cloud-compute/application/awsEc2Compute.ts Require the externally supplied SSH identity to be a pinned SHA-256 fingerprint, never scan output.">
+    <h3>validateSshIdentity</h3>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:240:1</code></p>
+    <p>Require the externally supplied SSH identity to be a pinned SHA-256 fingerprint, never scan output.</p>
 </article><article class="item" data-search="snapshot src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>snapshot</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:186:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:248:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="failure src/features/cloud-compute/application/awsEc2Compute.ts ">
     <h3>failure</h3>
-    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:233:1</code></p>
+    <p class="muted"><code>src/features/cloud-compute/application/awsEc2Compute.ts:297:7</code></p>
+    <p class="empty">No description available.</p>
+</article>
+    </section>
+  </section><section id="view-src-features-cloud-compute-application-resolveawsec2executioncontextasync-ts" class="view" data-view="src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts</h2>
+      <article class="item" data-search="resolveAwsEc2ExecutionContextAsync src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts Resolve explicit AWS credentials and their trusted account binding from the Infra credential port.">
+    <h3>resolveAwsEc2ExecutionContextAsync</h3>
+    <p class="muted"><code>src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts:10:1</code></p>
+    <p>Resolve explicit AWS credentials and their trusted account binding from the Infra credential port.</p>
+</article><article class="item" data-search="failure src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts ">
+    <h3>failure</h3>
+    <p class="muted"><code>src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts:38:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>

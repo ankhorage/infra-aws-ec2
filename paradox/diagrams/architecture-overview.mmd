@@ -4,7 +4,7 @@ graph TD
   package__ankhorage_infra_aws_ec2 --> entrypoint_src_index_ts
   module_examples_basic_usage_index_ts["examples/basic-usage/index.ts"]
   package__ankhorage_infra_aws_ec2 -.-> module_examples_basic_usage_index_ts
-  module_examples_basic_usage_index_ts --> module_dist_index_d_ts
+  module_examples_basic_usage_index_ts --> module_src_index_ts
   module_src_constants_infra_ts["src/constants/infra.ts"]
   package__ankhorage_infra_aws_ec2 -.-> module_src_constants_infra_ts
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts["src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"]
@@ -12,7 +12,11 @@ graph TD
   module_src_features_cloud_compute_adapters_outbound_createAwsSdkEc2Api_ts --> module_src_types_awsEc2_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts["src/features/cloud-compute/application/awsEc2Compute.ts"]
   package__ankhorage_infra_aws_ec2 -.-> module_src_features_cloud_compute_application_awsEc2Compute_ts
+  module_src_features_cloud_compute_application_awsEc2Compute_ts --> module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
   module_src_features_cloud_compute_application_awsEc2Compute_ts --> module_src_types_awsEc2_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts["src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts"]
+  package__ankhorage_infra_aws_ec2 -.-> module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts
+  module_src_features_cloud_compute_application_resolveAwsEc2ExecutionContextAsync_ts --> module_src_types_awsEc2_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts["src/features/cloud-compute/composition/createInfraAdapter.ts"]
   package__ankhorage_infra_aws_ec2 -.-> module_src_features_cloud_compute_composition_createInfraAdapter_ts
   module_src_features_cloud_compute_composition_createInfraAdapter_ts --> module_src_constants_infra_ts

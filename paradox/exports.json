@@ -10,7 +10,7 @@
     "modulePath": "src/types/awsEc2.ts",
     "sourceLocation": {
       "filePath": "src/types/awsEc2.ts",
-      "line": 39,
+      "line": 64,
       "column": 1
     },
     "exportPaths": [
@@ -42,7 +42,7 @@
     "modulePath": "src/types/awsEc2.ts",
     "sourceLocation": {
       "filePath": "src/types/awsEc2.ts",
-      "line": 16,
+      "line": 25,
       "column": 1
     },
     "exportPaths": [
@@ -65,28 +65,35 @@
       {
         "name": "inspectAsync",
         "kind": "method",
-        "type": "(identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
+        "type": "(execution: AwsEc2ExecutionContext, identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
         "required": true,
         "description": null
       },
       {
         "name": "startAsync",
         "kind": "method",
-        "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
         "required": true,
         "description": null
       },
       {
         "name": "terminateAsync",
         "kind": "method",
-        "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
         "required": true,
         "description": null
       },
       {
         "name": "validateAsync",
         "kind": "method",
-        "type": "(selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "type": "(execution: AwsEc2ExecutionContext, selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "waitUntilReadyAsync",
+        "kind": "method",
+        "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<AwsEc2Instance>>",
         "required": true,
         "description": null
       }
@@ -104,7 +111,7 @@
     "modulePath": "src/types/awsEc2.ts",
     "sourceLocation": {
       "filePath": "src/types/awsEc2.ts",
-      "line": 34,
+      "line": 58,
       "column": 1
     },
     "exportPaths": [
@@ -119,6 +126,13 @@
         "name": "configurationHash",
         "kind": "property",
         "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "execution",
+        "kind": "property",
+        "type": "AwsEc2ExecutionContext",
         "required": true,
         "description": null
       },
@@ -150,7 +164,7 @@
     "modulePath": "src/types/awsEc2.ts",
     "sourceLocation": {
       "filePath": "src/types/awsEc2.ts",
-      "line": 30,
+      "line": 54,
       "column": 1
     },
     "exportPaths": [
@@ -237,7 +251,7 @@
   {
     "name": "createAwsSdkEc2Api",
     "title": null,
-    "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+    "description": "Create an AWS boundary which accepts only explicit, port-resolved credentials.",
     "isReadme": false,
     "see": [],
     "security": [],
@@ -245,7 +259,7 @@
     "modulePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
     "sourceLocation": {
       "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-      "line": 24,
+      "line": 27,
       "column": 1
     },
     "exportPaths": [

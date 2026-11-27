@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.1.0",
+      "value": "v0.2.0",
       "color": "cb3837"
     },
     {
@@ -80,7 +80,7 @@
       "path": "examples/basic-usage/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "dist/index.d.ts"
+        "src/index.ts"
       ],
       "exports": []
     },
@@ -106,6 +106,7 @@
       "path": "src/features/cloud-compute/application/awsEc2Compute.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
         "src/types/awsEc2.ts"
       ],
       "exports": [
@@ -115,6 +116,16 @@
         "planAwsEc2ComputeAsync",
         "statusAwsEc2ComputeAsync",
         "validateAwsEc2ComputeAsync"
+      ]
+    },
+    {
+      "path": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/awsEc2.ts"
+      ],
+      "exports": [
+        "resolveAwsEc2ExecutionContextAsync"
       ]
     },
     {
@@ -161,6 +172,7 @@
         "AwsEc2AdapterOptions",
         "AwsEc2Api",
         "AwsEc2CreateInput",
+        "AwsEc2ExecutionContext",
         "AwsEc2Identity",
         "AwsEc2Instance"
       ]
@@ -178,7 +190,7 @@
       "modulePath": "src/types/awsEc2.ts",
       "sourceLocation": {
         "filePath": "src/types/awsEc2.ts",
-        "line": 39,
+        "line": 64,
         "column": 1
       },
       "exportPaths": [
@@ -210,7 +222,7 @@
       "modulePath": "src/types/awsEc2.ts",
       "sourceLocation": {
         "filePath": "src/types/awsEc2.ts",
-        "line": 16,
+        "line": 25,
         "column": 1
       },
       "exportPaths": [
@@ -233,28 +245,35 @@
         {
           "name": "inspectAsync",
           "kind": "method",
-          "type": "(identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
+          "type": "(execution: AwsEc2ExecutionContext, identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
           "required": true,
           "description": null
         },
         {
           "name": "startAsync",
           "kind": "method",
-          "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
           "required": true,
           "description": null
         },
         {
           "name": "terminateAsync",
           "kind": "method",
-          "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
           "required": true,
           "description": null
         },
         {
           "name": "validateAsync",
           "kind": "method",
-          "type": "(selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "type": "(execution: AwsEc2ExecutionContext, selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "waitUntilReadyAsync",
+          "kind": "method",
+          "type": "(execution: AwsEc2ExecutionContext, instanceId: string, signal?: AbortSignal) => Promise<InfraResult<AwsEc2Instance>>",
           "required": true,
           "description": null
         }
@@ -272,7 +291,7 @@
       "modulePath": "src/types/awsEc2.ts",
       "sourceLocation": {
         "filePath": "src/types/awsEc2.ts",
-        "line": 34,
+        "line": 58,
         "column": 1
       },
       "exportPaths": [
@@ -287,6 +306,13 @@
           "name": "configurationHash",
           "kind": "property",
           "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "execution",
+          "kind": "property",
+          "type": "AwsEc2ExecutionContext",
           "required": true,
           "description": null
         },
@@ -318,7 +344,7 @@
       "modulePath": "src/types/awsEc2.ts",
       "sourceLocation": {
         "filePath": "src/types/awsEc2.ts",
-        "line": 30,
+        "line": 54,
         "column": 1
       },
       "exportPaths": [
@@ -405,7 +431,7 @@
     {
       "name": "createAwsSdkEc2Api",
       "title": null,
-      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "description": "Create an AWS boundary which accepts only explicit, port-resolved credentials.",
       "isReadme": false,
       "see": [],
       "security": [],
@@ -413,7 +439,7 @@
       "modulePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 24,
+        "line": 27,
         "column": 1
       },
       "exportPaths": [
@@ -498,23 +524,56 @@
   "sourceFunctions": [
     {
       "name": "createAwsSdkEc2Api",
-      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "description": "Create an AWS boundary which accepts only explicit, port-resolved credentials.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 24,
+        "line": 27,
         "column": 1
       }
     },
     {
-      "name": "createRequest",
-      "description": "Map secure portable EC2 intent into a single SDK create request.",
+      "name": "request",
+      "description": "Produce a secure idempotent EC2 creation request.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 130,
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "ec2",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "sts",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 216,
+        "column": 1
+      }
+    },
+    {
+      "name": "credentials",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 219,
         "column": 1
       }
     },
@@ -525,18 +584,51 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 172,
+        "line": 226,
         "column": 1
       }
     },
     {
-      "name": "mapState",
+      "name": "toInstance",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 179,
+        "line": 235,
+        "column": 1
+      }
+    },
+    {
+      "name": "state",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 250,
+        "column": 1
+      }
+    },
+    {
+      "name": "isReady",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitAsync",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 272,
         "column": 1
       }
     },
@@ -547,7 +639,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 191,
+        "line": 285,
         "column": 1
       }
     },
@@ -558,7 +650,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "line": 194,
+        "line": 288,
         "column": 1
       }
     },
@@ -569,7 +661,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 17,
+        "line": 18,
         "column": 1
       }
     },
@@ -580,7 +672,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 27,
+        "line": 33,
         "column": 1
       }
     },
@@ -591,7 +683,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 36,
+        "line": 50,
         "column": 1
       }
     },
@@ -602,7 +694,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 68,
+        "line": 86,
         "column": 1
       }
     },
@@ -613,7 +705,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 98,
+        "line": 133,
         "column": 1
       }
     },
@@ -624,7 +716,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 127,
+        "line": 166,
         "column": 1
       }
     },
@@ -635,7 +727,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 161,
+        "line": 204,
         "column": 1
       }
     },
@@ -646,8 +738,8 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 172,
-        "column": 1
+        "line": 215,
+        "column": 7
       }
     },
     {
@@ -657,7 +749,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 175,
+        "line": 219,
         "column": 1
       }
     },
@@ -668,7 +760,29 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 183,
+        "line": 227,
+        "column": 7
+      }
+    },
+    {
+      "name": "validateTags",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 229,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateSshIdentity",
+      "description": "Require the externally supplied SSH identity to be a pinned SHA-256 fingerprint, never scan output.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 240,
         "column": 1
       }
     },
@@ -679,7 +793,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 186,
+        "line": 248,
         "column": 1
       }
     },
@@ -690,7 +804,29 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
-        "line": 233,
+        "line": 297,
+        "column": 7
+      }
+    },
+    {
+      "name": "resolveAwsEc2ExecutionContextAsync",
+      "description": "Resolve explicit AWS credentials and their trusted account binding from the Infra credential port.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "failure",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
+        "line": 38,
         "column": 1
       }
     },
@@ -712,7 +848,7 @@
       "name": "createAwsSdkEc2Api",
       "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
       "symbolName": "createAwsSdkEc2Api",
-      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "description": "Create an AWS boundary which accepts only explicit, port-resolved credentials.",
       "isReadme": false
     },
     {
@@ -753,13 +889,23 @@
       },
       {
         "fromPath": "examples/basic-usage/index.ts",
-        "toPath": "dist/index.d.ts",
+        "toPath": "src/index.ts",
         "sourcePath": "examples/basic-usage/index.ts"
       },
       {
         "fromPath": "src/features/cloud-compute/application/awsEc2Compute.ts",
         "toPath": "src/types/awsEc2.ts",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "toPath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts",
+        "toPath": "src/types/awsEc2.ts",
+        "sourcePath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts"
       },
       {
         "fromPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
@@ -820,8 +966,32 @@
       },
       {
         "fromSymbol": "validateAwsEc2ComputeAsync",
+        "toSymbol": "validateSshIdentity",
+        "callExpression": "validateSshIdentity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "validateAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "validateAwsEc2ComputeAsync",
         "toSymbol": "validateAsync",
         "callExpression": "api.validateAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
@@ -843,9 +1013,27 @@
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "waitUntilReadyAsync",
+        "callExpression": "api.waitUntilReadyAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
         "fromSymbol": "planAwsEc2ComputeAsync",
         "toSymbol": "getSelection",
         "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "validateTags",
+        "callExpression": "validateTags",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
@@ -876,6 +1064,18 @@
         "fromSymbol": "ensureAwsEc2ComputeAsync",
         "toSymbol": "getSelection",
         "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "validateTags",
+        "callExpression": "validateTags",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
@@ -910,6 +1110,12 @@
       },
       {
         "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "waitUntilReadyAsync",
+        "callExpression": "api.waitUntilReadyAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
         "toSymbol": "snapshot",
         "callExpression": "snapshot",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
@@ -918,6 +1124,18 @@
         "fromSymbol": "ensureAwsEc2ComputeAsync",
         "toSymbol": "startAsync",
         "callExpression": "api.startAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "statusAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "statusAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
@@ -942,6 +1160,18 @@
         "fromSymbol": "destroyAwsEc2ComputeAsync",
         "toSymbol": "failure",
         "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "callExpression": "resolveAwsEc2ExecutionContextAsync",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
@@ -981,6 +1211,18 @@
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
       },
       {
+        "fromSymbol": "validateTags",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "validateSshIdentity",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
         "fromSymbol": "snapshot",
         "toSymbol": "failure",
         "callExpression": "failure",
@@ -988,9 +1230,21 @@
       },
       {
         "fromSymbol": "snapshot",
+        "toSymbol": "validateSshIdentity",
+        "callExpression": "validateSshIdentity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "snapshot",
         "toSymbol": "resource",
         "callExpression": "resource",
         "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "resolveAwsEc2ExecutionContextAsync",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/resolveAwsEc2ExecutionContextAsync.ts"
       },
       {
         "fromSymbol": "createInfraAdapter",
@@ -1036,8 +1290,8 @@
       },
       {
         "fromSymbol": "validateAsync",
-        "toSymbol": "ok",
-        "callExpression": "ok",
+        "toSymbol": "sts",
+        "callExpression": "sts",
         "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
       },
       {
@@ -1047,75 +1301,165 @@
         "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
       },
       {
+        "fromSymbol": "validateAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "validateAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
         "fromSymbol": "inspectAsync",
         "toSymbol": "tags",
         "callExpression": "tags",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "request",
+        "callExpression": "request",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "startAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "startAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "startAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "terminateAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "terminateAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "terminateAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "ec2",
+        "callExpression": "ec2",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "toInstance",
+        "callExpression": "toInstance",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "isReady",
+        "callExpression": "isReady",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "waitUntilReadyAsync",
+        "toSymbol": "waitAsync",
+        "callExpression": "waitAsync",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "request",
+        "toSymbol": "tags",
+        "callExpression": "tags",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "ec2",
+        "toSymbol": "credentials",
+        "callExpression": "credentials",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "sts",
+        "toSymbol": "credentials",
+        "callExpression": "credentials",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "toInstance",
+        "toSymbol": "state",
+        "callExpression": "state",
         "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
       },
       {
         "fromSymbol": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
-        "toSymbol": "mapState",
-        "callExpression": "mapState",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "inspectAsync",
-        "toSymbol": "fail",
-        "callExpression": "fail",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "inspectAsync",
-        "toSymbol": "ok",
-        "callExpression": "ok",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "createAsync",
-        "toSymbol": "createRequest",
-        "callExpression": "createRequest",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "createAsync",
-        "toSymbol": "fail",
-        "callExpression": "fail",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "createAsync",
-        "toSymbol": "ok",
-        "callExpression": "ok",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "startAsync",
-        "toSymbol": "ok",
-        "callExpression": "ok",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "startAsync",
-        "toSymbol": "fail",
-        "callExpression": "fail",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "terminateAsync",
-        "toSymbol": "ok",
-        "callExpression": "ok",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "terminateAsync",
-        "toSymbol": "fail",
-        "callExpression": "fail",
-        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
-      },
-      {
-        "fromSymbol": "createRequest",
-        "toSymbol": "tags",
-        "callExpression": "tags",
+        "toSymbol": "reject",
+        "callExpression": "reject",
         "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
       }
     ],
@@ -1152,6 +1496,11 @@
       },
       {
         "fromSymbol": "AwsEc2Api",
+        "toType": "AwsEc2ExecutionContext",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
         "toType": "AwsEc2Identity",
         "sourcePath": "src/types/awsEc2.ts"
       },
@@ -1168,6 +1517,11 @@
       {
         "fromSymbol": "AwsEc2Api",
         "toType": "InfraResult",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2CreateInput",
+        "toType": "AwsEc2ExecutionContext",
         "sourcePath": "src/types/awsEc2.ts"
       },
       {
