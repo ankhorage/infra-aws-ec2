@@ -1,0 +1,70 @@
+{
+  "name": "@ankhorage/infra-aws-ec2",
+  "version": "0.1.0",
+  "description": "AWS EC2 compute adapter for provider-neutral Ankhorage infrastructure.",
+  "keywords": [
+    "ankhorage",
+    "aws",
+    "ec2",
+    "infrastructure",
+    "compute",
+    "adapter"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankhorage/infra-aws-ec2.git"
+  },
+  "homepage": "https://github.com/ankhorage/infra-aws-ec2#readme",
+  "bugs": {
+    "url": "https://github.com/ankhorage/infra-aws-ec2/issues"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@ankhorage/contracts": "^26.19.0",
+    "@aws-sdk/client-ec2": "^3.1178.0"
+  },
+  "devDependencies": {
+    "@ankhorage/devtools": "^2.12.2",
+    "@ankhorage/paradox": "^0.6.1",
+    "@types/bun": "^1.4.5",
+    "@types/node": "^26.6.11",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "build": "rm -rf dist tsconfig.tsbuildinfo && bun x tsc -p tsconfig.build.json",
+    "typecheck": "bun x tsc --noEmit -p tsconfig.json",
+    "check-types": "bun run typecheck",
+    "test": "bun test src",
+    "docs": "paradox && ankhorage-prettier --write README.md paradox",
+    "prepack": "bun run build",
+    "lint": "ankhorage-eslint . --max-warnings=0",
+    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
+    "format": "ankhorage-prettier --write .",
+    "format:check": "ankhorage-prettier --check .",
+    "knip:check": "ankhorage-knip",
+    "changeset": "ankhorage-changeset",
+    "changeset:status": "ankhorage-changeset status --since=origin/main",
+    "version-packages": "ankhorage-changeset version"
+  },
+  "packageManager": "bun@1.4.2"
+}

@@ -1,0 +1,328 @@
+[
+  {
+    "name": "AwsEc2AdapterOptions",
+    "title": null,
+    "description": null,
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/awsEc2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/awsEc2.ts",
+      "line": 39,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AwsEc2Api"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "api",
+        "kind": "property",
+        "type": "AwsEc2Api | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AwsEc2Api",
+    "title": null,
+    "description": null,
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/awsEc2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/awsEc2.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AwsEc2CreateInput",
+      "AwsEc2Identity",
+      "AwsEc2Instance"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "createAsync",
+        "kind": "method",
+        "type": "(input: AwsEc2CreateInput, signal?: AbortSignal) => Promise<InfraResult<AwsEc2Instance>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "inspectAsync",
+        "kind": "method",
+        "type": "(identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "startAsync",
+        "kind": "method",
+        "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "terminateAsync",
+        "kind": "method",
+        "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "validateAsync",
+        "kind": "method",
+        "type": "(selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AwsEc2CreateInput",
+    "title": null,
+    "description": null,
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/awsEc2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/awsEc2.ts",
+      "line": 34,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AwsEc2Identity"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "configurationHash",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "identity",
+        "kind": "property",
+        "type": "AwsEc2Identity",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "selection",
+        "kind": "property",
+        "type": "{ readonly provider: \"aws-ec2\"; } & { readonly region: string; readonly instanceType: string; readonly ami: string; readonly architecture: \"x86_64\" | \"arm64\"; readonly vpcId: string; readonly subnetId: string; readonly securityGroupIds: readonly string[]; readonly credentials?: import(\"@ankhorage/contracts/infra\").InfraControlPlaneCredentialRef; readonly iamInstanceProfile?: string; readonly ssh: { readonly keyName: string; readonly credentials: import(\"@ankhorage/contracts/infra\").InfraControlPlaneCredentialRef; readonly hostKeyFingerprint: string; readonly authorizedCidrs: readonly string[]; readonly user?: string; readonly port?: number; }; readonly rootVolume?: { readonly sizeGiB?: number; readonly type?: \"gp3\" | \"gp2\" | \"io1\" | \"io2\"; readonly iops?: number; readonly throughputMiBps?: number; readonly deleteOnTermination?: boolean; }; readonly tags?: Readonly<Record<string, string>>; }",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AwsEc2Identity",
+    "title": null,
+    "description": null,
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/awsEc2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/awsEc2.ts",
+      "line": 30,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "environment",
+        "kind": "property",
+        "type": "\"local\" | \"preview\" | \"production\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "projectId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AwsEc2Instance",
+    "title": null,
+    "description": null,
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/awsEc2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/awsEc2.ts",
+      "line": 7,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "configurationHash",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "id",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "privateIp",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "publicIp",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "state",
+        "kind": "property",
+        "type": "\"pending\" | \"running\" | \"stopped\" | \"stopping\" | \"shutting-down\" | \"terminated\" | \"failed\"",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "createAwsSdkEc2Api",
+    "title": null,
+    "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "function",
+    "modulePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+    "sourceLocation": {
+      "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+      "line": 24,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AwsEc2Api"
+    ],
+    "signatures": [
+      {
+        "label": "() => AwsEc2Api",
+        "parameters": [],
+        "returnType": "AwsEc2Api",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createInfraAdapter",
+    "title": null,
+    "description": "Create the canonical AWS EC2 compute adapter with an injectable provider boundary. @readme",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "function",
+    "modulePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+    "sourceLocation": {
+      "filePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AwsEc2AdapterOptions"
+    ],
+    "signatures": [
+      {
+        "label": "(options?: AwsEc2AdapterOptions) => InfraComputeAdapter<\"aws-ec2\">",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "AwsEc2AdapterOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "InfraComputeAdapter<\"aws-ec2\">",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "infraAdapterDescriptor",
+    "title": null,
+    "description": "Canonical Contracts-backed adapter discovery descriptor.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "value",
+    "modulePath": "src/constants/infra.ts",
+    "sourceLocation": {
+      "filePath": "src/constants/infra.ts",
+      "line": 4,
+      "column": 14
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  }
+]

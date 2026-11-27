@@ -1,0 +1,1191 @@
+{
+  "packageName": "Ankhorage AWS EC2 Infrastructure",
+  "packageId": "@ankhorage/infra-aws-ec2",
+  "description": "Provides a secure, provider-neutral AWS EC2 compute adapter backed by the modular AWS SDK v3 client.",
+  "purpose": "Translate provider-neutral compute lifecycle intent into explicit, ownership-verified AWS EC2 operations without leaking credentials into portable state.",
+  "productDocumentation": null,
+  "collaborators": true,
+  "donation": {
+    "account": "ankhorage"
+  },
+  "badges": [
+    {
+      "id": "license",
+      "label": "license",
+      "value": "MIT",
+      "color": "2563eb"
+    },
+    {
+      "id": "npm",
+      "label": "npm",
+      "value": "v0.1.0",
+      "color": "cb3837"
+    },
+    {
+      "id": "runtime",
+      "label": "runtime",
+      "value": "bun",
+      "color": "f59e0b"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "value": "strict",
+      "color": "2563eb"
+    },
+    {
+      "id": "eslint",
+      "label": "eslint",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "prettier",
+      "label": "prettier",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "build",
+      "label": "build",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "value": "configured",
+      "color": "6f42c1"
+    },
+    {
+      "id": "docs",
+      "label": "paradox",
+      "value": "canonical",
+      "color": "0a7f3f"
+    }
+  ],
+  "usage": {
+    "packageName": "@ankhorage/infra-aws-ec2",
+    "command": null
+  },
+  "usageEntries": [],
+  "exampleCount": 1,
+  "findings": [],
+  "config": null,
+  "entrypoints": [
+    "src/index.ts"
+  ],
+  "modules": [
+    {
+      "path": "examples/basic-usage/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "dist/index.d.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/constants/infra.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "infraAdapterDescriptor"
+      ]
+    },
+    {
+      "path": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/awsEc2.ts"
+      ],
+      "exports": [
+        "createAwsSdkEc2Api"
+      ]
+    },
+    {
+      "path": "src/features/cloud-compute/application/awsEc2Compute.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/awsEc2.ts"
+      ],
+      "exports": [
+        "destroyAwsEc2ComputeAsync",
+        "ensureAwsEc2ComputeAsync",
+        "inspectAwsEc2ComputeAsync",
+        "planAwsEc2ComputeAsync",
+        "statusAwsEc2ComputeAsync",
+        "validateAwsEc2ComputeAsync"
+      ]
+    },
+    {
+      "path": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/constants/infra.ts",
+        "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "src/types/awsEc2.ts"
+      ],
+      "exports": [
+        "createInfraAdapter"
+      ]
+    },
+    {
+      "path": "src/index.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "AwsEc2AdapterOptions",
+        "AwsEc2Api",
+        "AwsEc2CreateInput",
+        "AwsEc2Identity",
+        "AwsEc2Instance",
+        "createAwsSdkEc2Api",
+        "createInfraAdapter",
+        "infraAdapterDescriptor"
+      ]
+    },
+    {
+      "path": "src/infraAdapter.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/index.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/types/awsEc2.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AwsEc2AdapterOptions",
+        "AwsEc2Api",
+        "AwsEc2CreateInput",
+        "AwsEc2Identity",
+        "AwsEc2Instance"
+      ]
+    }
+  ],
+  "exports": [
+    {
+      "name": "AwsEc2AdapterOptions",
+      "title": null,
+      "description": null,
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/awsEc2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/awsEc2.ts",
+        "line": 39,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AwsEc2Api"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "api",
+          "kind": "property",
+          "type": "AwsEc2Api | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AwsEc2Api",
+      "title": null,
+      "description": null,
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/awsEc2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/awsEc2.ts",
+        "line": 16,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AwsEc2CreateInput",
+        "AwsEc2Identity",
+        "AwsEc2Instance"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "createAsync",
+          "kind": "method",
+          "type": "(input: AwsEc2CreateInput, signal?: AbortSignal) => Promise<InfraResult<AwsEc2Instance>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "inspectAsync",
+          "kind": "method",
+          "type": "(identity: AwsEc2Identity, signal?: AbortSignal) => Promise<InfraResult<readonly AwsEc2Instance[]>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "startAsync",
+          "kind": "method",
+          "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "terminateAsync",
+          "kind": "method",
+          "type": "(instanceId: string, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "validateAsync",
+          "kind": "method",
+          "type": "(selection: InfraComputeSelection<\"aws-ec2\">, signal?: AbortSignal) => Promise<InfraResult<null>>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AwsEc2CreateInput",
+      "title": null,
+      "description": null,
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/awsEc2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/awsEc2.ts",
+        "line": 34,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AwsEc2Identity"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "configurationHash",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "identity",
+          "kind": "property",
+          "type": "AwsEc2Identity",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "selection",
+          "kind": "property",
+          "type": "{ readonly provider: \"aws-ec2\"; } & { readonly region: string; readonly instanceType: string; readonly ami: string; readonly architecture: \"x86_64\" | \"arm64\"; readonly vpcId: string; readonly subnetId: string; readonly securityGroupIds: readonly string[]; readonly credentials?: import(\"@ankhorage/contracts/infra\").InfraControlPlaneCredentialRef; readonly iamInstanceProfile?: string; readonly ssh: { readonly keyName: string; readonly credentials: import(\"@ankhorage/contracts/infra\").InfraControlPlaneCredentialRef; readonly hostKeyFingerprint: string; readonly authorizedCidrs: readonly string[]; readonly user?: string; readonly port?: number; }; readonly rootVolume?: { readonly sizeGiB?: number; readonly type?: \"gp3\" | \"gp2\" | \"io1\" | \"io2\"; readonly iops?: number; readonly throughputMiBps?: number; readonly deleteOnTermination?: boolean; }; readonly tags?: Readonly<Record<string, string>>; }",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AwsEc2Identity",
+      "title": null,
+      "description": null,
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/awsEc2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/awsEc2.ts",
+        "line": 30,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "environment",
+          "kind": "property",
+          "type": "\"local\" | \"preview\" | \"production\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "projectId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AwsEc2Instance",
+      "title": null,
+      "description": null,
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/awsEc2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/awsEc2.ts",
+        "line": 7,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "configurationHash",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "privateIp",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "publicIp",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "state",
+          "kind": "property",
+          "type": "\"pending\" | \"running\" | \"stopped\" | \"stopping\" | \"shutting-down\" | \"terminated\" | \"failed\"",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "createAwsSdkEc2Api",
+      "title": null,
+      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "function",
+      "modulePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 24,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AwsEc2Api"
+      ],
+      "signatures": [
+        {
+          "label": "() => AwsEc2Api",
+          "parameters": [],
+          "returnType": "AwsEc2Api",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createInfraAdapter",
+      "title": null,
+      "description": "Create the canonical AWS EC2 compute adapter with an injectable provider boundary. @readme",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "function",
+      "modulePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "line": 16,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AwsEc2AdapterOptions"
+      ],
+      "signatures": [
+        {
+          "label": "(options?: AwsEc2AdapterOptions) => InfraComputeAdapter<\"aws-ec2\">",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "AwsEc2AdapterOptions",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "InfraComputeAdapter<\"aws-ec2\">",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "infraAdapterDescriptor",
+      "title": null,
+      "description": "Canonical Contracts-backed adapter discovery descriptor.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "value",
+      "modulePath": "src/constants/infra.ts",
+      "sourceLocation": {
+        "filePath": "src/constants/infra.ts",
+        "line": 4,
+        "column": 14
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    }
+  ],
+  "components": [],
+  "sourceFunctions": [
+    {
+      "name": "createAwsSdkEc2Api",
+      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRequest",
+      "description": "Map secure portable EC2 intent into a single SDK create request.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "tags",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "mapState",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "ok",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 191,
+        "column": 1
+      }
+    },
+    {
+      "name": "fail",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "line": 194,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateAwsEc2ComputeAsync",
+      "description": "Validate AWS EC2 config and control-plane access without any mutation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectAwsEc2ComputeAsync",
+      "description": "Discover only exact project/environment-owned instances without a local ledger.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "planAwsEc2ComputeAsync",
+      "description": "Produce a deterministic no-mutation EC2 plan, requiring explicit replacement for drift.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "ensureAwsEc2ComputeAsync",
+      "description": "Reconcile a single owned EC2 instance without silently replacing configuration drift.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
+      "name": "statusAwsEc2ComputeAsync",
+      "description": "Report fresh provider state for the exact owned instance.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 98,
+        "column": 1
+      }
+    },
+    {
+      "name": "destroyAwsEc2ComputeAsync",
+      "description": "Terminate only a confirmed instance carrying the exact project/environment ownership tags.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "getSelection",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 161,
+        "column": 1
+      }
+    },
+    {
+      "name": "identity",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "resource",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "configurationHash",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 183,
+        "column": 1
+      }
+    },
+    {
+      "name": "snapshot",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "failure",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInfraAdapter",
+      "description": "Create the canonical AWS EC2 compute adapter with an injectable provider boundary. @readme",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "line": 16,
+        "column": 1
+      }
+    }
+  ],
+  "sequenceScenarios": [
+    {
+      "kind": "export",
+      "name": "createAwsSdkEc2Api",
+      "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+      "symbolName": "createAwsSdkEc2Api",
+      "description": "Create a bounded modular AWS SDK v3 EC2 adapter; SDK credentials stay in the process credential chain.",
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createInfraAdapter",
+      "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+      "symbolName": "createInfraAdapter",
+      "description": "Create the canonical AWS EC2 compute adapter with an injectable provider boundary. @readme",
+      "isReadme": false
+    }
+  ],
+  "graphs": {
+    "imports": [
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/constants/infra.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/types/awsEc2.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/infraAdapter.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromPath": "examples/basic-usage/index.ts",
+        "toPath": "dist/index.d.ts",
+        "sourcePath": "examples/basic-usage/index.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "toPath": "src/types/awsEc2.ts",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "toPath": "src/constants/infra.ts",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "toPath": "src/types/awsEc2.ts",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "toPath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/composition/createInfraAdapter.ts",
+        "toPath": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "toPath": "src/types/awsEc2.ts",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      }
+    ],
+    "calls": [
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createInfraAdapter",
+        "callExpression": "createInfraAdapter",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "examples/basic-usage/index.ts",
+        "toSymbol": "createInfraAdapter",
+        "callExpression": "createInfraAdapter",
+        "sourcePath": "examples/basic-usage/index.ts"
+      },
+      {
+        "fromSymbol": "validateAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "validateAwsEc2ComputeAsync",
+        "toSymbol": "validateAsync",
+        "callExpression": "api.validateAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "inspectAsync",
+        "callExpression": "api.inspectAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "inspectAwsEc2ComputeAsync",
+        "toSymbol": "snapshot",
+        "callExpression": "snapshot",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "inspectAsync",
+        "callExpression": "api.inspectAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "resource",
+        "callExpression": "resource",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "planAwsEc2ComputeAsync",
+        "toSymbol": "configurationHash",
+        "callExpression": "configurationHash",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "getSelection",
+        "callExpression": "getSelection",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "inspectAsync",
+        "callExpression": "api.inspectAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "configurationHash",
+        "callExpression": "configurationHash",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "api.createAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "snapshot",
+        "callExpression": "snapshot",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "ensureAwsEc2ComputeAsync",
+        "toSymbol": "startAsync",
+        "callExpression": "api.startAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "statusAwsEc2ComputeAsync",
+        "toSymbol": "inspectAsync",
+        "callExpression": "api.inspectAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "statusAwsEc2ComputeAsync",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "src/features/cloud-compute/application/awsEc2Compute.ts",
+        "toSymbol": "resource",
+        "callExpression": "resource",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "inspectAsync",
+        "callExpression": "api.inspectAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "destroyAwsEc2ComputeAsync",
+        "toSymbol": "terminateAsync",
+        "callExpression": "api.terminateAsync",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "getSelection",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "resource",
+        "toSymbol": "identity",
+        "callExpression": "identity",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "configurationHash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "snapshot",
+        "toSymbol": "failure",
+        "callExpression": "failure",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "snapshot",
+        "toSymbol": "resource",
+        "callExpression": "resource",
+        "sourcePath": "src/features/cloud-compute/application/awsEc2Compute.ts"
+      },
+      {
+        "fromSymbol": "createInfraAdapter",
+        "toSymbol": "createAwsSdkEc2Api",
+        "callExpression": "createAwsSdkEc2Api",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "validateAsync",
+        "toSymbol": "validateAwsEc2ComputeAsync",
+        "callExpression": "validateAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "inspectAwsEc2ComputeAsync",
+        "callExpression": "inspectAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "planAsync",
+        "toSymbol": "planAwsEc2ComputeAsync",
+        "callExpression": "planAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "ensureAsync",
+        "toSymbol": "ensureAwsEc2ComputeAsync",
+        "callExpression": "ensureAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "statusAsync",
+        "toSymbol": "statusAwsEc2ComputeAsync",
+        "callExpression": "statusAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "destroyAsync",
+        "toSymbol": "destroyAwsEc2ComputeAsync",
+        "callExpression": "destroyAwsEc2ComputeAsync",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "validateAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "validateAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "tags",
+        "callExpression": "tags",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts",
+        "toSymbol": "mapState",
+        "callExpression": "mapState",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "inspectAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "createRequest",
+        "callExpression": "createRequest",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "startAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "startAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "terminateAsync",
+        "toSymbol": "ok",
+        "callExpression": "ok",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "terminateAsync",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createRequest",
+        "toSymbol": "tags",
+        "callExpression": "tags",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      }
+    ],
+    "typeReferences": [
+      {
+        "fromSymbol": "createAwsSdkEc2Api",
+        "toType": "AwsEc2Api",
+        "sourcePath": "src/features/cloud-compute/adapters/outbound/createAwsSdkEc2Api.ts"
+      },
+      {
+        "fromSymbol": "createInfraAdapter",
+        "toType": "AwsEc2AdapterOptions",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "createInfraAdapter",
+        "toType": "InfraComputeAdapter",
+        "sourcePath": "src/features/cloud-compute/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2AdapterOptions",
+        "toType": "AwsEc2Api",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "AbortSignal",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "AwsEc2CreateInput",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "AwsEc2Identity",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "AwsEc2Instance",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "InfraComputeSelection",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2Api",
+        "toType": "InfraResult",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2CreateInput",
+        "toType": "AwsEc2Identity",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2CreateInput",
+        "toType": "InfraControlPlaneCredentialRef",
+        "sourcePath": "src/types/awsEc2.ts"
+      },
+      {
+        "fromSymbol": "AwsEc2CreateInput",
+        "toType": "Readonly",
+        "sourcePath": "src/types/awsEc2.ts"
+      }
+    ],
+    "componentComposition": []
+  }
+}
