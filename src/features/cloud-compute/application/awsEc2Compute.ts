@@ -21,6 +21,8 @@ export async function validateAwsEc2ComputeAsync(
 ): Promise<InfraResult<null>> {
   const selection = getSelection(context);
   if (!selection.ok) return selection;
+  const sshIdentity = validateSshIdentity(selection.value);
+  if (!sshIdentity.ok) return sshIdentity;
   const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
   return execution.ok
     ? api.validateAsync(execution.value, selection.value, context.signal)
@@ -37,7 +39,11 @@ export async function inspectAwsEc2ComputeAsync(
   const execution = await resolveAwsEc2ExecutionContextAsync(context, selection.value);
   if (!execution.ok) return execution;
   const instances = await api.inspectAsync(execution.value, identity(context), context.signal);
-  return instances.ok ? snapshot(context, instances.value) : instances;
+  if (!instances.ok) return instances;
+  const [instance] = instances.value;
+  if (instance?.state !== 'running') return snapshot(context, instances.value);
+  const ready = await api.waitUntilReadyAsync(execution.value, instance.id, context.signal);
+  return ready.ok ? snapshot(context, [ready.value]) : ready;
 }
 
 /*** Produce a deterministic no-mutation EC2 plan, requiring explicit replacement for drift. */
@@ -230,6 +236,15 @@ function validateTags(selection: InfraComputeSelection<'aws-ec2'>): InfraResult<
     ? failure('aws-ec2-reserved-tag', 'AWS EC2 ownership tags are reserved.')
     : { ok: true, value: null, diagnostics: [] };
 }
+/*** Require the externally supplied SSH identity to be a pinned SHA-256 fingerprint, never scan output. */
+function validateSshIdentity(selection: InfraComputeSelection<'aws-ec2'>): InfraResult<null> {
+  return /^SHA256:[A-Za-z0-9+/]+$/u.test(selection.ssh.hostKeyFingerprint)
+    ? { ok: true, value: null, diagnostics: [] }
+    : failure(
+        'aws-ec2-ssh-host-key-invalid',
+        'AWS EC2 requires a pinned SSH SHA-256 host key fingerprint.',
+      );
+}
 function snapshot(
   context: InfraExecutionContext,
   instances: readonly AwsEc2Instance[],
@@ -248,6 +263,8 @@ function snapshot(
   const selection = context.desired.deployment.compute;
   if (selection.provider !== 'aws-ec2')
     return failure('aws-ec2-selection-invalid', 'AWS EC2 selection is unavailable.');
+  const sshIdentity = validateSshIdentity(selection);
+  if (!sshIdentity.ok) return sshIdentity;
   return {
     ok: true,
     value: {
